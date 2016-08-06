@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        گزارش
+    </title>
+    <script src="../web/js/jquery.js"></script>
+</head>
+<body>
+<script src="../web/js/highmaps.js"></script>
+<script src="../web/js/data.js"></script>
+<script src="../web/js/ir-all.js"></script>
+
+
+<div id="container" style="height: 500px; min-width: 310px; max-width: 600px; margin: 0 auto"></div>
+
+
+<script>
+    $(function () {
+
+        $.getJSON('prepare.php?id=4', function (data) {
+            var results = JSON.parse(data.result);
+
+            // Make codes uppercase to match the map results
+            $.each(results, function () {
+                this.param = this.param.toUpperCase();
+            });
+
+            // Instanciate the map
+            $('#container').highcharts('Map', {
+
+                chart : {
+                    borderWidth : 1
+                },
+
+                title : {
+                    text : data.name
+                },
+
+                mapNavigation: {
+                    enabled: true,
+                    buttonOptions: {
+                        verticalAlign: 'bottom'
+                    }
+                },
+
+                colorAxis: {
+                    min: 0,
+                    minColor: '#44AA44',
+                    maxColor: '#225522',
+                },
+
+                series : [{
+                    data : results,
+                    mapData: Highcharts.maps['countries/ir/ir-all'],
+                    joinBy: ['local', 'param'],
+                    name: data.name,
+                    states: {
+                        hover: {
+                            color: '#EEDD66'
+                        }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.param}'
+                    },
+                    tooltip: {
+                        pointFormat: '{point.param}: {point.value}'
+                    }
+                }]
+            });
+        });
+    });
+</script>
+</body>
+</html>

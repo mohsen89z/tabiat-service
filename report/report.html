@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        گزارش
+    </title>
+    <script src="../web/js/jquery.js"></script>
+</head>
+<body>
+
+<div class="chart-container">
+    <script src="../web/js/highcharts.js"></script>
+    <script src="../web/js/highcharts-more.js"></script>
+    <script src="../web/js/data-backup.js"></script>
+    <script src="../web/js/exporting.js"></script>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $.getJSON('reportCnt.php', function (reps) {
+
+            for (var reportCnt = 1; reportCnt <= reps.cnt; reportCnt++) {
+                createNewReportChart(reportCnt, reps.reports[reportCnt]);
+            }
+        })
+    })
+
+    function createNewReportChart(reportCnt, report) {
+        $(".chart-container").append('<div id="container' + reportCnt + '" style="min-width: 420px; max-width: 600px; height: 400px; margin: 0 auto"></div>');
+
+        var options = {
+            chart: {
+                renderTo: '',
+                type: 'pie',
+                options3d: {
+                    enabled: true,
+                    alpha: 10,
+                    beta: 25,
+                    depth: 70
+                }
+            },
+            plotOptions: {
+                column: {
+                    depth: 25
+                },
+                pie: {
+                    depth: 45
+                }
+            },
+            title: {
+                text: ''
+            },
+            series: [{}],
+            xAxis: {
+                categories: []
+            }
+        };
+
+
+        var processed_data = new Array();
+        var processed_cats = new Array();
+
+        var reportData = JSON.parse(report.result);
+
+        for (var dataCnt = 0; dataCnt < reportData.length; dataCnt++) {
+            processed_cats.push([reportData[dataCnt].param]);
+            processed_data.push(parseInt(reportData[dataCnt].cnt));
+        }
+        options.series[0].data = processed_data;
+        options.xAxis.categories = processed_cats;
+        options.title.text = report.name;
+        options.chart.renderTo = 'container' + reportCnt;
+        options.chart.type = report.type || "line";
+
+        var chart = new Highcharts.Chart(options);
+    }
+</script>
+</body>
+</html>
