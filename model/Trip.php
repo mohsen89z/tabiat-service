@@ -59,7 +59,7 @@ class Trip
         $start_date, $end_date, $departure_place, $departure_time,
         $attractions, $opr_type, $experties_level, $requiremnt_course,
         $requirment_stuff, $capacity, $pric_type, $price, $wage,
-        $price_decs, $contract_type, $start_order, $end_order, $invis_cmt)
+        $price_decs, $contract_type, $start_order, $end_order, $invis_cmt , $trip_spec)
     {
         $this->id = $id;
         $this->name = $name;
@@ -208,53 +208,6 @@ class Trip
         return $specials;
     }
 
-    public static function get6Trips()
-    {
-        $sql = "select * from trip limit 6";
-
-        $raws = runSelect($sql);
-
-        $specials = array();
-        foreach($raws as $raw){
-            array_push($specials, new Trip($raw->id, $raw->name, $raw->status, $raw->is_special ,$raw->opr-stat, $raw->trip_type, $raw->province_id, $raw->description, $raw->adminstartor_cmt,
-                    $raw->start_date, $raw->end_date, $raw->departure_place, $raw->departure_time,
-                    $raw->attractions, $raw->opr_type, $raw->experties_level, $raw->requiremnt_course,
-                    $raw->requirment_stuff, $raw->capacity, $raw->pric_type, $raw->price, $raw->wage,
-                    $raw->price_decs, $raw->contract_type, $raw->start_order, $raw->end_order, $raw->invis_cmt,
-                    $raw->id, $raw->name, $raw->status, $raw->opr_stat, $raw->trip_type,
-                    $raw->province_id, $raw->description, $raw->adminstartor_cmt,
-                    $raw->start_date, $raw->end_date, $raw->departure_place, $raw->departure_time,
-                    $raw->attractions, $raw->opr_type, $raw->experties_level, $raw->requiremnt_course,
-                    $raw->requirment_stuff, $raw->capacity, $raw->pric_type, $raw->price, $raw->wage,
-                    $raw->price_decs, $raw->contract_type, $raw->start_order, $raw->end_order, $raw->invis_cmt));
-        }
-
-        return $specials;
-    }
-
-    public static function getTripList()
-    {
-        $sql = "select * from trip";
-
-        $raws = runSelect($sql);
-
-        $specials = array();
-        foreach($raws as $raw){
-            array_push($specials, new Trip($raw->id, $raw->name, $raw->status, $raw->opr-stat, $raw->trip_type, $raw->province_id, $raw->description, $raw->adminstartor_cmt,
-                    $raw->start_date, $raw->end_date, $raw->departure_place, $raw->departure_time,
-                    $raw->attractions, $raw->opr_type, $raw->experties_level, $raw->requiremnt_course,
-                    $raw->requirment_stuff, $raw->capacity, $raw->pric_type, $raw->price, $raw->wage,
-                    $raw->price_decs, $raw->contract_type, $raw->start_order, $raw->end_order, $raw->invis_cmt,
-                    $raw->id, $raw->name, $raw->status, $raw->opr_stat, $raw->trip_type,
-                    $raw->province_id, $raw->description, $raw->adminstartor_cmt,
-                    $raw->start_date, $raw->end_date, $raw->departure_place, $raw->departure_time,
-                    $raw->attractions, $raw->opr_type, $raw->experties_level, $raw->requiremnt_course,
-                    $raw->requirment_stuff, $raw->capacity, $raw->pric_type, $raw->price, $raw->wage,
-                    $raw->price_decs, $raw->contract_type, $raw->start_order, $raw->end_order, $raw->invis_cmt));
-        }
-
-        return $specials;
-    }
 }
 
 function getAllTrips()
