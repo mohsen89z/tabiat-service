@@ -50,6 +50,9 @@
             echo "        <a href='./editTrip.php?id=" . $trip->id . "' class='btn btn-default btn-sm'>";
             echo "            <span class='glyphicon glyphicon-edit'></span> ویرایش";
             echo "        </a>";
+            echo "        <a href='./addImage.php?id=" . $trip->id . "' class='btn btn-default btn-sm'>";
+            echo "            <span class='glyphicon glyphicon-camera'></span> افزودن تصویر";
+            echo "        </a>";
             echo "    </td>";
             echo "<tr />";
         }

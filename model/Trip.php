@@ -136,10 +136,59 @@ class Trip
         return runSingleSelect($sql);
     }
 
-    public static function getMaxId(){
+    public static function getMaxId()
+    {
         $sql = "select * from trip";
 
         return runCount($sql);
+    }
+
+    public static function get6Trips()
+    {
+        $sql = "select * from trip limit 6";
+
+        $raws = runSelect($sql);
+
+        $specials = array();
+        foreach($raws as $raw){
+            array_push($specials, new Trip($raw->id, $raw->name, $raw->status, $raw->opr-stat, $raw->trip_type, $raw->province_id, $raw->description, $raw->adminstartor_cmt,
+                    $raw->start_date, $raw->end_date, $raw->departure_place, $raw->departure_time,
+                    $raw->attractions, $raw->opr_type, $raw->experties_level, $raw->requiremnt_course,
+                    $raw->requirment_stuff, $raw->capacity, $raw->pric_type, $raw->price, $raw->wage,
+                    $raw->price_decs, $raw->contract_type, $raw->start_order, $raw->end_order, $raw->invis_cmt,
+                    $raw->id, $raw->name, $raw->status, $raw->opr_stat, $raw->trip_type,
+                    $raw->province_id, $raw->description, $raw->adminstartor_cmt,
+                    $raw->start_date, $raw->end_date, $raw->departure_place, $raw->departure_time,
+                    $raw->attractions, $raw->opr_type, $raw->experties_level, $raw->requiremnt_course,
+                    $raw->requirment_stuff, $raw->capacity, $raw->pric_type, $raw->price, $raw->wage,
+                    $raw->price_decs, $raw->contract_type, $raw->start_order, $raw->end_order, $raw->invis_cmt));
+        }
+
+        return $specials;
+    }
+
+    public static function getTripList()
+    {
+        $sql = "select * from trip";
+
+        $raws = runSelect($sql);
+
+        $specials = array();
+        foreach($raws as $raw){
+            array_push($specials, new Trip($raw->id, $raw->name, $raw->status, $raw->opr-stat, $raw->trip_type, $raw->province_id, $raw->description, $raw->adminstartor_cmt,
+                    $raw->start_date, $raw->end_date, $raw->departure_place, $raw->departure_time,
+                    $raw->attractions, $raw->opr_type, $raw->experties_level, $raw->requiremnt_course,
+                    $raw->requirment_stuff, $raw->capacity, $raw->pric_type, $raw->price, $raw->wage,
+                    $raw->price_decs, $raw->contract_type, $raw->start_order, $raw->end_order, $raw->invis_cmt,
+                    $raw->id, $raw->name, $raw->status, $raw->opr_stat, $raw->trip_type,
+                    $raw->province_id, $raw->description, $raw->adminstartor_cmt,
+                    $raw->start_date, $raw->end_date, $raw->departure_place, $raw->departure_time,
+                    $raw->attractions, $raw->opr_type, $raw->experties_level, $raw->requiremnt_course,
+                    $raw->requirment_stuff, $raw->capacity, $raw->pric_type, $raw->price, $raw->wage,
+                    $raw->price_decs, $raw->contract_type, $raw->start_order, $raw->end_order, $raw->invis_cmt));
+        }
+
+        return $specials;
     }
 }
 
