@@ -48,7 +48,8 @@ include_once "../model/Trip.php";
                 شماره
             </label>
             <div class="col-sm-10">
-                <input type="number" class="form-control" name="id" id="id" readonly="readonly" value="<?php echo ((Trip::getMaxId()) + 1); ?>" placeholder="شماره سفر" >
+                <input type="number" class="form-control" name="id" id="id" readonly="readonly"
+                       value="<?php echo((Trip::getMaxId()) + 1); ?>" placeholder="شماره سفر">
             </div>
         </div>
         <div class="form-group">
@@ -248,7 +249,8 @@ include_once "../model/Trip.php";
                 </select>
             </div>
             <div class="col-sm-2">
-                <input type="number" step="1000" min="0" class="form-control" name="price" id="price" placeholder="قیمت">
+                <input type="number" step="1000" min="0" class="form-control" name="price" id="price"
+                       placeholder="قیمت">
             </div>
             <span class="col-sm-1">
                 تومان
@@ -257,7 +259,8 @@ include_once "../model/Trip.php";
                 پورسانت
             </label>
             <div class="col-sm-3">
-                <input type="number" step="1000" min="0" class="form-control" name="wage" id="wage" placeholder="پورسانت">
+                <input type="number" step="1000" min="0" class="form-control" name="wage" id="wage"
+                       placeholder="پورسانت">
             </div>
             <span class="col-sm-1">
                 تومان
@@ -292,13 +295,15 @@ include_once "../model/Trip.php";
                 تاریخ شروع ثبت نام
             </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="start_order" name="start_order" placeholder="تاریخ شروع ثبت نام"/>
+                <input type="text" class="form-control" id="start_order" name="start_order"
+                       placeholder="تاریخ شروع ثبت نام"/>
             </div>
             <label class="control-label col-sm-2" for="end_date">
                 تاریخ پایان ثبت نام
             </label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="end_order" name="end_order" placeholder="تاریخ پایان ثبت نام"/>
+                <input type="text" class="form-control" id="end_order" name="end_order"
+                       placeholder="تاریخ پایان ثبت نام"/>
             </div>
         </div>
         <div class="form-group">
@@ -308,6 +313,20 @@ include_once "../model/Trip.php";
             <div class="col-sm-10">
                 <textarea class="form-control" rows="5" name="invis_cmt" id="invis_cmt"
                           placeholder="توضیحات مخفی"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="invis_cmt">
+                مشخصات سفر
+            </label>
+            <div class="col-sm-10 row">
+                <?php
+                $con_types = Constant::getAllByType("trip_spc");
+
+                foreach ($con_types as $con_type) {
+                    echo "<div  class='col-sm-6'><input type='checkbox' value='" . $con_type->id . "' name='trip_spec[]'/> " . $con_type->name . " <img src='/tabiat/assets/img/trip-icos/" . $con_type->id . ".png' /></div>";
+                }
+                ?>
             </div>
         </div>
 

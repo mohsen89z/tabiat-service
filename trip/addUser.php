@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>
-        افزودن افراد به سفر ها
+اضافه کردن افراد به سفر
     </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -42,7 +42,7 @@ include_once '../model/Trip.php';
 include_once '../model/TripImage.php';
 
 if (empty($_GET["id"])) {
-    echo "Access Denied!";
+    echo "Invalid Trip Id";
     die(0);
 } else {
     $id = $_GET["id"];
@@ -78,7 +78,7 @@ if (!empty($_POST["ProcessingStep"])) {
 
 <div class="container">
     <h2>
-        مدیریت تصاویر سفر
+        اضافه کردن افراد به سفر
     </h2>
     <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
         <input type="hidden" name="ProcessingStep" value="add">

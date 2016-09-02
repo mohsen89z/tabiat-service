@@ -26,6 +26,10 @@
             margin-bottom: 100px;
             border-radius: 5px;
         }
+
+        .item img {
+            width: 100px;
+        }
     </style>
 </head>
 <body>
@@ -47,32 +51,9 @@ if (empty($_GET["id"])) {
 } else {
     $id = $_GET["id"];
 
-    TripImage::initTripImages();
+//    TripImage::initTripImages();
     $trip = Trip::loadById($id);
     $images = TripImage::loadByTripId($id);
-    foreach ($images as $image) {
-        echo "1";
-    }
-}
-
-if (!empty($_POST["ProcessingStep"])) {
-    $file = rand(1000,100000)."-".$_FILES['image']['name'];
-    $file_loc = $_FILES['image']['tmp_name'];
-    $file_size = $_FILES['image']['size'];
-    $file_type = $_FILES['image']['type'];
-    $folder="uploads/";
-
-    move_uploaded_file($file_loc,$folder.$file);
-
-    $image  = new TripImage(-1, $_POST["id"], $file);
-    echo $image->image;
-    try{
-        //$image->save();
-        echo "با موفقیت ذخیره شد!";
-    } catch (Exception $ex) {
-        echo "با موفقیت ذخیره نشد!";
-        echo $ex->getCode() . " " . $ex->getMessage();
-    }
 }
 ?>
 
@@ -80,6 +61,59 @@ if (!empty($_POST["ProcessingStep"])) {
     <h2>
         مدیریت تصاویر سفر
     </h2>
+
+    <?php
+    if (!empty($_POST["ProcessingStep"])) {
+        try {
+            $file = basename(rand(1000, 100000) . "-" . $_FILES['image']['name']);
+            $file_loc = $_FILES['image']['tmp_name'];
+            $file_size = $_FILES['image']['size'];
+            $file_type = $_FILES['image']['type'];
+            $folder = "/usr/share/nginx/html/tabiat-service/trip/images/";
+
+            move_uploaded_file($file_loc, $folder . $file);
+
+            $image = new TripImage(-1, $_POST["id"], $file);
+            $image->save();
+            ?>
+            <div class="alert alert-success">
+                <?php
+                echo "با موفقیت ذخیره شد!";
+                ?>
+            </div>
+            <?php
+        } catch (Exception $ex) {
+            ?>
+            <div class="alert alert-danger">
+                <?php
+                echo "خطا رخ داد!";
+                echo $ex->getCode() . " " . $ex->getMessage();
+                ?>
+            </div>
+            <?php
+        }
+    }
+    ?>
+
+    <?php
+    if (count($images) > 0) {
+        ?>
+        <!-- Squares -->
+        <div id="squersSlider" class="owl-carousel owl-theme Iran-Sans">
+            <?php
+            foreach ($images as $image) {
+                ?>
+                <div class="item">
+                    <img src="/tabiat-service/trip/images/<?php echo $image->image; ?>"/>
+                </div>
+                <?php
+            }
+            ?>
+        </div>
+        <?php
+    }
+    ?>
+
     <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
         <input type="hidden" name="ProcessingStep" value="add">
         <div class="form-group">

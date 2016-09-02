@@ -25,6 +25,7 @@ include_once '../util/dbManager.php';
 $id = $_POST["id"];
 $name = $_POST["name"];
 $status = $_POST["status"];
+$is_special = $_POST["is_special"];
 $description = $_POST["description"];
 $opr_stat = $_POST["opr_stat"];
 $trip_type = $_POST["trip_type"];
@@ -45,58 +46,66 @@ $price_decs = $_POST["price_decs"];
 $contract_type = $_POST["contract_type"];
 $start_order = $_POST["start_order"];
 $end_order = $_POST["end_order"];
+$duration = $_POST["duration"];
 $invis_cmt = $_POST["invis_cmt"];
 $requiremnt_course = $_POST["requiremnt_course"];
 $requirment_stuff = $_POST["requirment_stuff"];
+$trip_spec = $_POST["trip_spec"];
 
-$trip = new Trip($id, $name, $status, $opr_stat, $trip_type,
+$trip = new Trip($id, $name, $status, $is_special,$opr_stat, $trip_type,
     $province_id, $description, $adminstartor_cmt,
     $start_date, $end_date, $departure_place, $departure_time,
     $attractions, $opr_type, $experties_level, $requiremnt_course,
     $requirment_stuff, $capacity, $pric_type, $price, $wage,
-    $price_decs, $contract_type, $start_order, $end_order, $invis_cmt);
+    $price_decs, $contract_type, $start_order, $end_order, $invis_cmt , $trip_spec);
 
 //$trip->save();
 
-$sql = "INSERT INTO trip (id, name, status, opr_stat, trip_type,
+$sql = "INSERT INTO trip (id, name, status,  is_special, opr_stat, trip_type,
                           province_id, description, adminstartor_cmt,
                           start_date, end_date, departure_place, departure_time,
                           attractions, opr_type, experties_level, requiremnt_course,
                           requirment_stuff, capacity, pric_type, price, wage,
-                          price_decs, contract_type, start_order, end_order, invis_cmt
+                          price_decs, contract_type, start_order, end_order,
+                           invis_cmt , duration , trip_specs
                       )
-                      VALUES ('%s', '%s', '%s', '%s', '%s',
+                      VALUES ('%s', '%s', '%s','%s', '%s', '%s',
                             '%s', '%s', '%s',
                             '%s', '%s', '%s', '%s',
                             '%s', '%s', '%s', '%s',
                             '%s', '%s', '%s', '%s', '%s',
-                            '%s', '%s', '%s', '%s', '%s')
+                            '%s', '%s', '%s', '%s',
+                             '%s', '%s' , '%s')
                       ON DUPLICATE KEY UPDATE
-                          id = '%s', name = '%s', status = '%s', opr_stat = '%s', trip_type = '%s',
+                          id = '%s', name = '%s', status = '%s', is_special = '%s' ,opr_stat = '%s', trip_type = '%s',
                           province_id = '%s', description = '%s', adminstartor_cmt = '%s',
                           start_date = '%s', end_date = '%s', departure_place = '%s', departure_time = '%s',
                           attractions = '%s', opr_type = '%s', experties_level = '%s', requiremnt_course = '%s',
                           requirment_stuff = '%s', capacity = '%s', pric_type = '%s', price = '%s', wage = '%s',
-                          price_decs = '%s', contract_type = '%s', start_order = '%s', end_order = '%s', invis_cmt = '%s'";
+                          price_decs = '%s', contract_type = '%s', start_order = '%s', end_order = '%s',
+                          invis_cmt = '%s', duration = '%s' , trip_specs = '%s'";
 
 $sql = sprintf($sql,
-    $trip->id, $trip->name, $trip->status, $trip->opr_stat, $trip->trip_type,
+    $trip->id, $trip->name, $trip->status, $trip->is_special ,$trip->opr_stat, $trip->trip_type,
     $trip->province_id, $trip->description, $trip->adminstartor_cmt,
     $trip->start_date, $trip->end_date, $trip->departure_place, $trip->departure_time,
     $trip->attractions, $trip->opr_type, $trip->experties_level, $trip->requiremnt_course,
     $trip->requirment_stuff, $trip->capacity, $trip->pric_type, $trip->price, $trip->wage,
-    $trip->price_decs, $trip->contract_type, $trip->start_order, $trip->end_order, $trip->invis_cmt,
-    $trip->id, $trip->name, $trip->status, $trip->opr_stat, $trip->trip_type,
+    $trip->price_decs, $trip->contract_type, $trip->start_order, $trip->end_order,
+    $trip->invis_cmt, $trip->duration, json_encode($trip_spec),
+    $trip->id, $trip->name, $trip->status, $trip->is_special , $trip->opr_stat, $trip->trip_type,
     $trip->province_id, $trip->description, $trip->adminstartor_cmt,
     $trip->start_date, $trip->end_date, $trip->departure_place, $trip->departure_time,
     $trip->attractions, $trip->opr_type, $trip->experties_level, $trip->requiremnt_course,
     $trip->requirment_stuff, $trip->capacity, $trip->pric_type, $trip->price, $trip->wage,
-    $trip->price_decs, $trip->contract_type, $trip->start_order, $trip->end_order, $trip->invis_cmt);
+    $trip->price_decs, $trip->contract_type, $trip->start_order, $trip->end_order,
+    $trip->invis_cmt , $trip->duration, json_encode($trip_spec));
 
 //echo $sql;
 //echo "<br>";
-
-runQuery($sql);
+logTabiat("before query: $sql");
+$test = runQuery($sql);
+logTabiat("after query $test");
 
 
 echo "<h2>" . "سفر با موفقیت ثبت شد!" . "</h2>";

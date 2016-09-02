@@ -25,7 +25,7 @@ class Special
     }
 
     public static function getAll(){
-        $sql = "select trip_id, priority from specials limit 6";
+        $sql = "select trip_id, priority from specials limit 4";
 
         $raws = runSelect($sql);
 

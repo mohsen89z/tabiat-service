@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="03d5f75f-17e4-4c8b-a4a2-b1d38addf7fa" name="Tabiat" url="http://138.201.6.242/">
-        <fileTransfer host="185.81.98.131" port="22" accessType="SFTP" password="dfeedfd8dfc1df9cdfe8dffedf92dfdbdf9edfed" username="root">
+      <webServer id="03d5f75f-17e4-4c8b-a4a2-b1d38addf7fa" name="Tabiat" url="http://91.109.17.87/">
+        <fileTransfer host="91.109.17.87" port="22" accessType="SFTP" password="dfe0dfffdfc1df98dfc3dffddf9fdfdcdfdbdff8dfccdf98dfcbdffc" username="root">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>

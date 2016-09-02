@@ -34,15 +34,23 @@ class TripImage
         $images = array();
         $raws = runSelect($sql);
         foreach($raws as $raw){
-            array_push($images, new TripImage($raw["id"], $raw["trip_id"], $raw["image"]));
+            array_push($images, new TripImage($raw->id, $raw->trip_id, $raw->image));
         }
 
         return $images;
     }
 
-    public function save(){
-        $sql = "INSERT INTO tripimages (trip_id, image) VALUES ($this->trip_id, $this->image)";
+    public static function getRandomImgByTripId($tripId){
+        $sql = sprintf("select id, trip_id, image from tripimages where trip_id = '%s' ORDER BY RAND() limit 1" , $tripId);
 
+        $raw = runSingleSelect($sql);
+        $image =  new TripImage($raw->id, $raw->trip_id, $raw->image);
+
+        return $image;
+    }
+
+    public function save(){
+        $sql = "INSERT INTO tripimages (trip_id, image) VALUES ($this->trip_id, '$this->image')";
         runQuery($sql);
     }
 
