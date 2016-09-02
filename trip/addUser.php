@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>
-اضافه کردن افراد به سفر
+        اضافه کردن افراد به سفر
     </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,44 +39,31 @@
 
 
 include_once '../model/Trip.php';
-include_once '../model/TripImage.php';
+include_once '../model/User.php';
+include_once '../model/UserTrip.php';
 
 if (empty($_GET["id"])) {
     echo "Invalid Trip Id";
     die(0);
 } else {
     $id = $_GET["id"];
-
-    TripImage::initTripImages();
-    $trip = Trip::loadById($id);
-    $images = TripImage::loadByTripId($id);
-    foreach ($images as $image) {
-        echo "1";
-    }
 }
 
-if (!empty($_POST["ProcessingStep"])) {
-    $file = rand(1000,100000)."-".$_FILES['image']['name'];
-    $file_loc = $_FILES['image']['tmp_name'];
-    $file_size = $_FILES['image']['size'];
-    $file_type = $_FILES['image']['type'];
-    $folder="uploads/";
-
-    move_uploaded_file($file_loc,$folder.$file);
-
-    $image  = new TripImage(-1, $_POST["id"], $file);
-    echo $image->image;
-    try{
-        //$image->save();
-        echo "با موفقیت ذخیره شد!";
-    } catch (Exception $ex) {
-        echo "با موفقیت ذخیره نشد!";
-        echo $ex->getCode() . " " . $ex->getMessage();
-    }
-}
 ?>
 
 <div class="container">
+    <?php
+
+    if (!empty($_POST["ProcessingStep"])) {
+        logTabiat("we are here");
+        $userIds = $_POST["user_ids"];
+        logTabiat($userIds);
+        logTabiat($id);
+        UserTrip::addUsersToTrip($userIds, $id);
+        logTabiat("after this");
+    } else
+        $trip = Trip::loadById($id);
+    ?>
     <h2>
         اضافه کردن افراد به سفر
     </h2>
@@ -98,14 +85,58 @@ if (!empty($_POST["ProcessingStep"])) {
                        value="<?php echo $trip->name; ?>" placeholder="شماره سفر">
             </div>
         </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="image">
-                اننتخاب تصویر
-            </label>
-            <div class="col-sm-10">
-                <input type="file" class="form-control" name="image" id="image">
-            </div>
-        </div>
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <th>نام</th>
+                <th>نام خانوادگی</th>
+                <th>وضعیت تاهل</th>
+                <th>وضعیت سلامتی</th>
+                <th>انتخاب</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            include_once "../model/User.php";
+            include_once "../model/UserInfo.php";
+            include_once "../model/UserGroups.php";
+            include_once "../model/Trip.php";
+            include_once "../model/Constant.php";
+
+            $trip_id = $_GET["id"];
+            $allOtherUsers = getAllUsersOutOfTrip($trip_id);
+
+            foreach ($allOtherUsers as $user) {
+                $userInfo = UserInfo::loadById($user->id);
+                echo "<tr>";
+                echo "    <td>";
+                echo $userInfo->name;
+                echo "    </td><td>";
+                echo $userInfo->surename;
+                echo "    </td><td>";
+                $maritalStatuses = Constant::getAllByType("marriage");
+
+                foreach ($maritalStatuses as $maritalStatus) {
+                    if ($maritalStatus->id == $userInfo->married) {
+                        echo $maritalStatus->name;
+                    }
+                }
+
+                echo "    </td><td>";
+                if ($userInfo->illness == null)
+                    echo "سالم";
+                else
+                    echo $userInfo->illness;
+                echo "    </td><td>";
+                echo "<input type='checkbox' value='" . $user->id . "' name='user_ids[]'/>";
+                echo "            <span class='glyphicon glyphicon-edit'></span>اضافه کردن کاربر به سفر";
+                echo "        </a>";
+                echo "    </td>";
+                echo "<tr />";
+            }
+            ?>
+            </tbody>
+        </table>
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

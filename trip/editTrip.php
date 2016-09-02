@@ -428,7 +428,7 @@ $return_special = !empty($_GET["s"]);
             </label>
             <div class="col-sm-10">
                 <textarea
-                    <?php if (!$edit) echo "disabled='disabled'" ?><?php if (!$edit) echo "disabled='disabled'" ?>class="form-control"
+                    <?php if (!$edit) echo "disabled='disabled'" ?>class="form-control"
                     rows="5" name="invis_cmt" id="invis_cmt"
                     placeholder="توضیحات مخفی"><?php echo $trip->invis_cmt; ?></textarea>
             </div>
@@ -439,11 +439,30 @@ $return_special = !empty($_GET["s"]);
                 مشخصات سفر
             </label>
             <div class="col-sm-10 row">
+
                 <?php
                 $con_types = Constant::getAllByType("trip_spc");
+                if (!$edit) {
+                    foreach ($con_types as $con_type) {
+                        if (in_array($con_type->id, $trip_specs, true)) {
+                            echo "<div  class='col-sm-6'><input disabled='disabled' type='checkbox' value='" . $con_type->id . "' name='trip_spec[]' checked/>
+                    " . $con_type->name . " <img src='/tabiat/assets/img/trip-icos/" . $con_type->id . ".png' /></div>";
+                        } else {
+                            echo "<div  class='col-sm-6'><input disabled='disabled' type='checkbox' value='" . $con_type->id . "' name='trip_spec[]'/>
+                    " . $con_type->name . " <img src='/tabiat/assets/img/trip-icos/" . $con_type->id . ".png' /></div>";
+                        }
+                    }
+                } else {
+                    foreach ($con_types as $con_type) {
 
-                foreach ($con_types as $con_type) {
-                    echo "<div  class='col-sm-6'><input type='checkbox' value='" . $con_type->id . "' name='trip_spec[]'/> " . $con_type->name . " <img src='/tabiat/assets/img/trip-icos/" . $con_type->id . ".png' /></div>";
+                        if (in_array($con_type->id, $trip_specs, true)) {
+                            echo "<div  class='col-sm-6'><input type='checkbox' value='" . $con_type->id . "' name='trip_spec[]' checked/>
+                    " . $con_type->name . " <img src='/tabiat/assets/img/trip-icos/" . $con_type->id . ".png' /></div>";
+                        } else {
+                            echo "<div  class='col-sm-6'><input type='checkbox' value='" . $con_type->id . "' name='trip_spec[]'/>
+                    " . $con_type->name . " <img src='/tabiat/assets/img/trip-icos/" . $con_type->id . ".png' /></div>";
+                        }
+                    }
                 }
                 ?>
             </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>لیست کاربران</title>
     <meta charset="utf-8">
@@ -12,65 +12,79 @@
 <body>
 
 <div class="container">
-    <table class="table table-bordered table-striped table-hover">
-        <thead>
-        <tr>
-            <th>نام</th>
-            <th>نام خانوادگی</th>
-            <th>وضعیت تاهل</th>
-            <th>وضعیت سلامتی</th>
-            <th>تغییر رمز</th>
-        </tr>
-        </thead>
-        <tbody>
+    <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
 
-        <?php
-        include_once "../model/User.php";
-        include_once "../model/UserInfo.php";
-        include_once "../model/UserGroups.php";
-        include_once "../model/Trip.php";
-        include_once "../model/Constant.php";
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                <th>نام</th>
+                <th>نام خانوادگی</th>
+                <th>وضعیت تاهل</th>
+                <th>وضعیت سلامتی</th>
+                <th>تغییر رمز</th>
+            </tr>
+            </thead>
+            <tbody>
 
-        $trip_id = $_GET["id"];
-        $users = getAllUsersOfTrip($trip_id);
-        foreach ($users as $user) {
-            $userInfo = UserInfo::loadById($user->id);
-            echo "<tr>";
-            echo "    <td>";
-            echo $userInfo->name;
-            echo "    </td><td>";
-            echo $userInfo->surename;
-            echo "    </td><td>";
-            $maritalStatuses = Constant::getAllByType("marriage");
+            <?php
+            include_once "../model/User.php";
+            include_once "../model/UserInfo.php";
+            include_once "../model/UserTrip.php";
+            include_once "../model/UserGroups.php";
+            include_once "../model/Trip.php";
+            include_once "../model/Constant.php";
 
-            foreach ($maritalStatuses as $maritalStatus) {
-                if ($maritalStatus->id == $userInfo->married) {
-                    echo $maritalStatus->name;
-                }
+            $trip_id = $_GET["id"];
+            if (!empty($_POST["ProcessingStep"])) {
+                $userIds = $_POST["user_ids"];
+                logTabiat($userIds);
+                logTabiat($id);
+                UserTrip::removeUsersFrom($userIds, $trip_id);
+                logTabiat("after remove users");
             }
+            $users = getAllUsersOfTrip($trip_id);
+            foreach ($users as $user) {
+                $userInfo = UserInfo::loadById($user->id);
+                echo "<tr>";
+                echo "    <td>";
+                echo $userInfo->name;
+                echo "    </td><td>";
+                echo $userInfo->surename;
+                echo "    </td><td>";
+                $maritalStatuses = Constant::getAllByType("marriage");
 
-            echo "    </td><td>";
-            if ($userInfo->illness == null)
-                echo "سالم";
-            else
-                echo $userInfo->illness;
-            echo "    </td><td>";
-            echo "        <a href='./removeUserFromTrip.php?user_id=" . $user->id . "&trip_id=" . $trip_id . "' class='btn btn-default btn-sm'>";
-            echo "            <span class='glyphicon glyphicon-edit'></span>حذف کاربر از سفر ";
-            echo "        </a>";
-            echo "    </td>";
-            echo "<tr />";
-        }
-        ?>
-        </tbody>
-    </table>
+                foreach ($maritalStatuses as $maritalStatus) {
+                    if ($maritalStatus->id == $userInfo->married) {
+                        echo $maritalStatus->name;
+                    }
+                }
 
-    <br/>
-    <a href="addUser.php" class="btn btn-success" role="button">
-        افزودن کاربر به سفر
-    </a>
+                echo "    </td><td>";
+                if ($userInfo->illness == null)
+                    echo "سالم";
+                else
+                    echo $userInfo->illness;
+                echo "    </td><td>";
+                echo "<input type='checkbox' value='" . $user->id . "' name='user_ids[]'/>";
+                echo "            <span class='glyphicon glyphicon-edit'></span>حذف کاربر از سفر";
+                echo "        </a>";
+                echo "    </td>";
+                echo "<tr />";
+            }
+            ?>
+            </tbody>
+        </table>
+
+        <br/>
+        <button type="submit" class="btn btn-success">
+            حذف کاربران انتخاب شده
+        </button>
+        <a href="addUser.php" class="btn btn-success" role="button">
+            افزودن کاربر به سفر
+        </a>
+        <input type="hidden" name="ProcessingStep" value="add">
 
 </div>
-
+</form>
 </body>
 </html>

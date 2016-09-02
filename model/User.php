@@ -90,4 +90,17 @@ class User
     }
 }
 
+
+function getAllUsersOfTrip($tripId)
+{
+    $sql = sprintf("select * from users where id in (select user_id from user_trip where trip_id = '%s')", $tripId);
+
+    return runSelect($sql);
+}
+
+function getAllUsersOutOfTrip($tripId){
+    $sql = sprintf("select * from users where id not in (select user_id from user_trip where trip_id = '%s')", $tripId);
+    return runSelect($sql);
+}
+
 ?>
