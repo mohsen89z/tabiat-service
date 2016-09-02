@@ -53,14 +53,16 @@ class Trip
      * @param $status
      * @param $description
      */
+
     public function __construct(
-        $id, $name, $status, $opr_stat, $trip_type,
+        $id, $name, $status, $is_special, $opr_stat, $trip_type,
         $province_id, $description, $adminstartor_cmt,
         $start_date, $end_date, $departure_place, $departure_time,
         $attractions, $opr_type, $experties_level, $requiremnt_course,
         $requirment_stuff, $capacity, $pric_type, $price, $wage,
-        $price_decs, $contract_type, $start_order, $end_order, $invis_cmt , $trip_spec)
+        $price_decs, $contract_type, $start_order, $end_order, $invis_cmt, $trip_spec)
     {
+        $this->is_special = $is_special;
         $this->id = $id;
         $this->name = $name;
         $this->status = $status;
@@ -97,13 +99,13 @@ class Trip
         logTabiat("before ts" . $start_date . " and " . $end_date);
         $pieces = explode("/", $start_date);
 
-        $ts1 = $pieces[1]."/".$pieces[0]."/".$pieces[2];
+        $ts1 = $pieces[1] . "/" . $pieces[0] . "/" . $pieces[2];
         $pieces = explode("/", $end_date);
-        $ts2 =  $pieces[1]."/".$pieces[0]."/".$pieces[2];
+        $ts2 = $pieces[1] . "/" . $pieces[0] . "/" . $pieces[2];
         $ts1 = strtotime($ts1);
         $ts2 = strtotime($ts2);
-        logTabiat("after ts" .$ts1 . $ts2);
-        $this->duration = ($ts2 - $ts1) /3600 /24 + 1;
+        logTabiat("after ts" . $ts1 . $ts2);
+        $this->duration = ($ts2 - $ts1) / 3600 / 24 + 1;
         logTabiat("after this");
         logTabiat($this->duration);
 
@@ -130,7 +132,7 @@ class Trip
                           price_decs = '%s', contract_type = '%s', start_order = '%s', end_order = '%s', invis_cmt = '%s'";
 
         $sql = sprintf($sql,
-            $this->id, $this->name, $this->status, $this->is_special ,$this->opr_stat, $this->trip_type,
+            $this->id, $this->name, $this->status, $this->is_special, $this->opr_stat, $this->trip_type,
             $this->province_id, $this->description, $this->adminstartor_cmt,
             $this->start_date, $this->end_date, $this->departure_place, $this->departure_time,
             $this->attractions, $this->opr_type, $this->experties_level, $this->requiremnt_course,
@@ -167,18 +169,8 @@ class Trip
         $raws = runSelect($sql);
 
         $specials = array();
-        foreach($raws as $raw){
-            array_push($specials, new Trip($raw->id, $raw->name, $raw->status, $raw->opr-stat, $raw->trip_type, $raw->province_id, $raw->description, $raw->adminstartor_cmt,
-                    $raw->start_date, $raw->end_date, $raw->departure_place, $raw->departure_time,
-                    $raw->attractions, $raw->opr_type, $raw->experties_level, $raw->requiremnt_course,
-                    $raw->requirment_stuff, $raw->capacity, $raw->pric_type, $raw->price, $raw->wage,
-                    $raw->price_decs, $raw->contract_type, $raw->start_order, $raw->end_order, $raw->invis_cmt,
-                    $raw->id, $raw->name, $raw->status, $raw->opr_stat, $raw->trip_type,
-                    $raw->province_id, $raw->description, $raw->adminstartor_cmt,
-                    $raw->start_date, $raw->end_date, $raw->departure_place, $raw->departure_time,
-                    $raw->attractions, $raw->opr_type, $raw->experties_level, $raw->requiremnt_course,
-                    $raw->requirment_stuff, $raw->capacity, $raw->pric_type, $raw->price, $raw->wage,
-                    $raw->price_decs, $raw->contract_type, $raw->start_order, $raw->end_order, $raw->invis_cmt));
+        foreach ($raws as $raw) {
+            array_push($specials, self::convertRawToTrip($raw));
         }
 
         return $specials;
@@ -191,21 +183,20 @@ class Trip
         $raws = runSelect($sql);
 
         $specials = array();
-        foreach($raws as $raw){
-            array_push($specials, new Trip($raw->id, $raw->name, $raw->status, $raw->opr-stat, $raw->trip_type, $raw->province_id, $raw->description, $raw->adminstartor_cmt,
-                    $raw->start_date, $raw->end_date, $raw->departure_place, $raw->departure_time,
-                    $raw->attractions, $raw->opr_type, $raw->experties_level, $raw->requiremnt_course,
-                    $raw->requirment_stuff, $raw->capacity, $raw->pric_type, $raw->price, $raw->wage,
-                    $raw->price_decs, $raw->contract_type, $raw->start_order, $raw->end_order, $raw->invis_cmt,
-                    $raw->id, $raw->name, $raw->status, $raw->opr_stat, $raw->trip_type,
-                    $raw->province_id, $raw->description, $raw->adminstartor_cmt,
-                    $raw->start_date, $raw->end_date, $raw->departure_place, $raw->departure_time,
-                    $raw->attractions, $raw->opr_type, $raw->experties_level, $raw->requiremnt_course,
-                    $raw->requirment_stuff, $raw->capacity, $raw->pric_type, $raw->price, $raw->wage,
-                    $raw->price_decs, $raw->contract_type, $raw->start_order, $raw->end_order, $raw->invis_cmt));
+        foreach ($raws as $raw) {
+            array_push($specials, convertRawToTrip($raw));
         }
 
         return $specials;
+    }
+
+    private static function convertRawToTrip($raw)
+    {
+        return new Trip($raw->id, $raw->name, $raw->status, $raw->is_special, $raw->opr_stat, $raw->trip_type, $raw->province_id, $raw->description, $raw->adminstartor_cmt,
+            $raw->start_date, $raw->end_date, $raw->departure_place, $raw->departure_time,
+            $raw->attractions, $raw->opr_type, $raw->experties_level, $raw->requiremnt_course,
+            $raw->requirment_stuff, $raw->capacity, $raw->pric_type, $raw->price, $raw->wage,
+            $raw->price_decs, $raw->contract_type, $raw->start_order, $raw->end_order, $raw->invis_cmt, json_decode($raw->trip_specs));
     }
 
 }
@@ -220,13 +211,6 @@ function getAllTrips()
 function getAllSpecialTrips()
 {
     $sql = "select id, name, status, description from trip where is_special = 224";
-
-    return runSelect($sql);
-}
-
-function getAllUsersOfTrip($tripId)
-{
-    $sql = sprintf("select * from users where id in (select user_id from user_trip where trip_id = '%s')", $tripId);
 
     return runSelect($sql);
 }
