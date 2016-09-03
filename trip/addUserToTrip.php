@@ -49,6 +49,10 @@ if (empty($_GET["id"])) {
     $id = $_GET["id"];
 }
 
+if (!empty($_POST["uname"])) {
+    $uname = $_POST["uname"];
+}
+
 ?>
 
 <div class="container">
@@ -85,6 +89,19 @@ if (empty($_GET["id"])) {
                        value="<?php echo $trip->name; ?>" placeholder="شماره سفر">
             </div>
         </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="uname">
+                جستجو بر اساس نام کاربری
+            </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" name="uname" id="uname"
+                       value="<?php echo $uname; ?>" placeholder="نام کاربر">
+            </div>
+            <div class="col-sm-2">
+                <input type="submit" class="btn btn-success" value="جستجو"/>
+            </div>
+
+        </div>
         <table class="table table-bordered table-striped table-hover">
             <thead>
             <tr>
@@ -104,7 +121,11 @@ if (empty($_GET["id"])) {
             include_once "../model/Constant.php";
 
             $trip_id = $_GET["id"];
-            $allOtherUsers = getAllUsersOutOfTrip($trip_id);
+            if (!empty($_POST["uname"])) {
+                $allOtherUsers = User::getSearchedUsersOutOfTrip($trip_id, $_POST["uname"]);
+            } else {
+                $allOtherUsers = User::getAllUsersOutOfTrip($trip_id);
+            }
 
             foreach ($allOtherUsers as $user) {
                 $userInfo = UserInfo::loadById($user->id);
@@ -114,13 +135,7 @@ if (empty($_GET["id"])) {
                 echo "    </td><td>";
                 echo $userInfo->surename;
                 echo "    </td><td>";
-                $maritalStatuses = Constant::getAllByType("marriage");
-
-                foreach ($maritalStatuses as $maritalStatus) {
-                    if ($maritalStatus->id == $userInfo->married) {
-                        echo $maritalStatus->name;
-                    }
-                }
+                echo Constant::loadById($userInfo->married)->name;
 
                 echo "    </td><td>";
                 if ($userInfo->illness == null)
@@ -143,6 +158,9 @@ if (empty($_GET["id"])) {
                 <button type="submit" class="btn btn-success">
                     افزودن
                 </button>
+                <a href="tripUsers.php?id=<?php echo $trip_id; ?>" class="btn btn-danger" role="button">
+                    بازگشت به لیست کاربران ثبت نامی
+                </a>
                 <a href="./allTrips.php" class="btn btn-danger" role="button">
                     بازگشت به لیست سفر ها
                 </a>

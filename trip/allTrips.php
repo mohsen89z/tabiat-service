@@ -53,6 +53,9 @@
             echo "        <a href='./addImage.php?id=" . $trip->id . "' class='btn btn-default btn-sm'>";
             echo "            <span class='glyphicon glyphicon-camera'></span> افزودن تصویر";
             echo "        </a>";
+            echo "        <a href='./tripUsers.php?id=" . $trip->id . "' class='btn btn-default btn-sm'>";
+            echo "            <span class='glyphicon glyphicon-th-list'></span> کاربران ثبت نامی";
+            echo "        </a>";
             echo "    </td>";
             echo "<tr />";
         }

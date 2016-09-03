@@ -14,7 +14,7 @@ include_once '../model/TripImage.php';
 $method = $_GET["method"];
 
 if($method == "special") {
-    echo json_encode(Special::getAll());
+    echo json_encode(Trip::get4Special());
 } elseif ($method == "normal") {
     echo json_encode(Trip::get6Trips());
 } elseif ($method == "list") {

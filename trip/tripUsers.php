@@ -42,7 +42,7 @@
                 UserTrip::removeUsersFrom($userIds, $trip_id);
                 logTabiat("after remove users");
             }
-            $users = getAllUsersOfTrip($trip_id);
+            $users = User::getAllUsersOfTrip($trip_id);
             foreach ($users as $user) {
                 $userInfo = UserInfo::loadById($user->id);
                 echo "<tr>";
@@ -79,8 +79,11 @@
         <button type="submit" class="btn btn-success">
             حذف کاربران انتخاب شده
         </button>
-        <a href="addUser.php" class="btn btn-success" role="button">
+        <a href="addUserToTrip.php?id=<?php echo $trip_id; ?>" class="btn btn-success" role="button">
             افزودن کاربر به سفر
+        </a>
+        <a href="./allTrips.php" class="btn btn-danger" role="button">
+            بازگشت به لیست سفر ها
         </a>
         <input type="hidden" name="ProcessingStep" value="add">
 

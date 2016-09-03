@@ -176,6 +176,20 @@ class Trip
         return $specials;
     }
 
+    public static function get4Special()
+    {
+        $sql = "select * from trip WHERE is_special=224 limit 4";
+
+        $raws = runSelect($sql);
+
+        $specials = array();
+        foreach ($raws as $raw) {
+            array_push($specials, self::convertRawToTrip($raw));
+        }
+
+        return $specials;
+    }
+
     public static function getTripList()
     {
         $sql = "select * from trip";
