@@ -52,6 +52,9 @@ if (empty($_GET["id"])) {
 if (!empty($_POST["uname"])) {
     $uname = $_POST["uname"];
 }
+if (!empty($_POST["name"])) {
+    $name = $_POST["name"];
+}
 
 ?>
 
@@ -97,6 +100,14 @@ if (!empty($_POST["uname"])) {
                 <input type="text" class="form-control" name="uname" id="uname"
                        value="<?php echo $uname; ?>" placeholder="نام کاربر">
             </div>
+
+            <label class="control-label col-sm-2" for="name">
+                جستجو بر اساس نام
+            </label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" name="name" id="name"
+                       value="<?php echo $name; ?>" placeholder="نام کاربر">
+            </div>
             <div class="col-sm-2">
                 <input type="submit" class="btn btn-success" value="جستجو"/>
             </div>
@@ -107,7 +118,8 @@ if (!empty($_POST["uname"])) {
             <tr>
                 <th>نام</th>
                 <th>نام خانوادگی</th>
-                <th>وضعیت تاهل</th>
+                <th>وضعیت تاهل و تاریخ ازدواج</th>
+                <th>تاریخ تولد</th>
                 <th>وضعیت سلامتی</th>
                 <th>انتخاب</th>
             </tr>
@@ -123,6 +135,8 @@ if (!empty($_POST["uname"])) {
             $trip_id = $_GET["id"];
             if (!empty($_POST["uname"])) {
                 $allOtherUsers = User::getSearchedUsersOutOfTrip($trip_id, $_POST["uname"]);
+            } elseif (!empty($_POST["name"])) {
+                $allOtherUsers = User::getSearchedUsersOutOfTripWithUserInfo($trip_id, $_POST["name"]);
             } else {
                 $allOtherUsers = User::getAllUsersOutOfTrip($trip_id);
             }
@@ -136,7 +150,13 @@ if (!empty($_POST["uname"])) {
                 echo $userInfo->surename;
                 echo "    </td><td>";
                 echo Constant::loadById($userInfo->married)->name;
-
+                if ($userInfo->married == 18) {
+                    logTabiat("married!" .$userInfo->marriage_date);
+                    echo "<br>";
+                    echo $userInfo->marraige_date;
+                }
+                echo "    </td><td>";
+                echo $userInfo->birthdate;
                 echo "    </td><td>";
                 if ($userInfo->illness == null)
                     echo "سالم";

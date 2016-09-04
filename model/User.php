@@ -98,11 +98,18 @@ class User
 
     public static function getAllUsersOutOfTrip($tripId){
         $sql = sprintf("select * from users where id not in (select user_id from user_trip where trip_id = '%s')", $tripId);
+        logTabiat($sql);
         return runSelect($sql);
     }
 
     public static function getSearchedUsersOutOfTrip($tripId, $uname){
         $sql = "select * from users where id not in (select user_id from user_trip where trip_id = '$tripId') and username LIKE '$uname%'";
+        logTabiat($sql);
+        return runSelect($sql);
+    }
+
+    public static function getSearchedUsersOutOfTripWithUserInfo($tripId, $name){
+        $sql = "select * from users where id not in (select user_id from user_trip where trip_id = '$tripId') and id in (select id from user_info where name LIKE '$name%')";
         return runSelect($sql);
     }
 }
