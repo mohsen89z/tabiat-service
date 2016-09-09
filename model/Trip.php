@@ -151,7 +151,6 @@ class Trip
     public static function loadById($id)
     {
         $sql = sprintf("select * from trip where id = '%s'", $id);
-
         return runSingleSelect($sql);
     }
 
@@ -242,6 +241,13 @@ class Trip
 function getAllTrips()
 {
     $sql = "select id, name, status, description from trip";
+
+    return runSelect($sql);
+}
+
+function getAllTripsOfUser($userId)
+{
+    $sql = sprintf("select * from trip where id in (select trip_id from user_trip where user_id = '%s')", $userId);
 
     return runSelect($sql);
 }

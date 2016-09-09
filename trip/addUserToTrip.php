@@ -62,12 +62,10 @@ if (!empty($_POST["name"])) {
     <?php
 
     if (!empty($_POST["ProcessingStep"])) {
-        logTabiat("we are here");
         $userIds = $_POST["user_ids"];
         logTabiat($userIds);
         logTabiat($id);
         UserTrip::addUsersToTrip($userIds, $id);
-        logTabiat("after this");
     } else
         $trip = Trip::loadById($id);
     ?>
