@@ -198,10 +198,34 @@ class Trip
 
         $specials = array();
         foreach ($raws as $raw) {
-            array_push($specials, convertRawToTrip($raw));
+            array_push($specials, self::convertRawToTrip($raw));
         }
 
         return $specials;
+    }
+
+    public static function searchTripList($du, $lo)
+    {
+        $sql = "select * from trip where ";
+
+        if($du != '*') {
+            $sql = $sql . "duration = '$du'";
+        }
+        if($du != '*' && $lo != '*') {
+            $sql = $sql . " and ";
+        }
+        if($lo != '*') {
+            $sql = $sql . "province_id = '$lo'";
+        }
+
+        $raws = runSelect($sql);
+
+        $trips = array();
+        foreach ($raws as $raw) {
+            array_push($trips, self::convertRawToTrip($raw));
+        }
+
+        return $trips;
     }
 
     private static function convertRawToTrip($raw)
