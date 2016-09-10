@@ -25,7 +25,6 @@ include_once '../util/dbManager.php';
 $id = $_POST["id"];
 $name = $_POST["name"];
 $status = $_POST["status"];
-$is_special = $_POST["is_special"];
 $description = $_POST["description"];
 $opr_stat = $_POST["opr_stat"];
 $trip_type = $_POST["trip_type"];
@@ -46,13 +45,12 @@ $price_decs = $_POST["price_decs"];
 $contract_type = $_POST["contract_type"];
 $start_order = $_POST["start_order"];
 $end_order = $_POST["end_order"];
-$duration = $_POST["duration"];
 $invis_cmt = $_POST["invis_cmt"];
 $requiremnt_course = $_POST["requiremnt_course"];
 $requirment_stuff = $_POST["requirment_stuff"];
 $trip_spec = $_POST["trip_spec"];
 
-$trip = new Trip($id, $name, $status, $is_special,$opr_stat, $trip_type,
+$trip = new Trip($id, $name, $status ,225,$opr_stat, $trip_type,
     $province_id, $description, $adminstartor_cmt,
     $start_date, $end_date, $departure_place, $departure_time,
     $attractions, $opr_type, $experties_level, $requiremnt_course,
@@ -105,20 +103,15 @@ $sql = sprintf($sql,
 //echo "<br>";
 logTabiat("before query: $sql");
 $test = runQuery($sql);
-logTabiat("after query $test");
 
+logTabiat("after query $test");
 
 echo "<h2>" . "سفر با موفقیت ثبت شد!" . "</h2>";
 
+header("Location: ./additional_trip.php?id=".$test);
+
 ?>
 
-<br>
-<a href="addTrip.php" class="btn btn-success" role="button">
-    بازگشت
-</a>
-<a href="./allTrips.php" class="btn btn-success" role="button">
-    بازگشت به لیست سفر ها
-</a>
 
 </body>
 </html>

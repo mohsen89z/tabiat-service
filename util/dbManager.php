@@ -39,6 +39,7 @@ function runQuery($sql)
     try {
         if (mysqli_query($conn, $sql)) {
             logTabiat("Successful!");
+            return $conn->insert_id;
         } else {
             logTabiat("Error: " . mysqli_error($conn));
         }

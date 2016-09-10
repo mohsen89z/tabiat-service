@@ -334,7 +334,7 @@ include_once "../model/Trip.php";
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-success">
-                    افزودن
+                    ادامه
                 </button>
                 <a href="./allTrips.php" class="btn btn-danger" role="button">
                     بازگشت به لیست سفر ها
