@@ -1,3 +1,7 @@
+<?php
+ob_start();
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,8 +72,17 @@ echo "<h2>" . "کاربر با موفقیت ثبت شد!" . "</h2>";
 ?>
 
 <br>
-<a href="allUsers.php" class="btn btn-success" role="button">
-    بازگشت به لیست کاربران
+<?php
+if ($_SESSION["user_group"] == 1) {
+    ?>
+    <a href="allUsers.php" class="btn btn-success" role="button">
+        بازگشت به لیست کاربران
+    </a>
+    <?php
+}
+?>
+<a href="profile.php" class="btn btn-success" role="button">
+    بازگشت به پروفایل
 </a>
 
 </body>

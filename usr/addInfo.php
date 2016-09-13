@@ -11,12 +11,13 @@ if (empty($_GET["id"])) {
     $user = User::loadById($id);
 
     $edit = !empty($_GET["edit"]);
-    $newInfo = empty($user->info_id);
+//    $newInfo = empty($user->info_id);
 
-    if ($newInfo) {
+
+    if (empty($_GET["edit"])) {
         $userInfo = new UserInfo(UserInfo::getMaxId() + 1);
     } else {
-        $userInfo = UserInfo::loadById($user->info_id);
+        $userInfo = UserInfo::loadById($id);
     }
 
 }

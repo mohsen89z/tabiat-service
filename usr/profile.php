@@ -269,7 +269,7 @@ session_start();
             <label class="control-label col-sm-2" for="nativ_lnag">
                 زبان مادری
             </label>
-            <div class="col-sm-1">
+            <div class="col-sm-2">
                 <select disabled='disabled' class="form-control" name="nativ_lnag"
                         id="nativ_lnag">
                     <?php
@@ -288,7 +288,7 @@ session_start();
             <label class="control-label col-sm-2" for="first_lang">
                 زبان خارجی اول
             </label>
-            <div class="col-sm-1">
+            <div class="col-sm-2">
                 <select disabled='disabled' class="form-control" name="first_lang"
                         id="first_lang">
                     <option value="14">نامشخص</option>
@@ -308,7 +308,7 @@ session_start();
             <label class="control-label col-sm-2" for="sec_lang">
                 زبان خارجی دوم
             </label>
-            <div class="col-sm-1">
+            <div class="col-sm-2">
                 <select disabled='disabled' class="form-control" name="sec_lang"
                         id="sec_lang">
                     <option value="14">نامشخص</option>
@@ -325,10 +325,14 @@ session_start();
                     ?>
                 </select>
             </div>
+
+        </div>
+        <div class="form-group">
+
             <label class="control-label col-sm-2" for="edu_level">
                 میزان تحصیلات
             </label>
-            <div class="col-sm-1">
+            <div class="col-sm-2">
                 <select disabled='disabled' class="form-control" name="edu_level"
                         id="edu_level">
                     <option value="14">نامشخص</option>
@@ -345,12 +349,10 @@ session_start();
                     ?>
                 </select>
             </div>
-        </div>
-        <div class="form-group">
             <label class="control-label col-sm-2" for="edu_field">
                 رشته تحصیلی
             </label>
-            <div class="col-sm-10">
+            <div class="col-sm-6">
                 <input <?php if (!$newInfo) echo "value='" . $userInfo->edu_field . "'"; ?> disabled='disabled'
                                                                                             type="text"
                                                                                             class="form-control"
