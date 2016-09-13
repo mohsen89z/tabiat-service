@@ -41,19 +41,19 @@ ob_start();
 session_start();
 
 
-    if ($_SESSION["valid"] != true) {
+if ($_SESSION["valid"] != true) {
 
-        echo 'شما دسترسی به این صفحه ندارید';
+    echo 'شما دسترسی به این صفحه ندارید';
 
-        header('Refresh: 2; URL = ../util/login.php');
-        die();
-    }
-    if ($_SESSION["user_group"] != 1) {
-        echo 'شما دسترسی به این صفحه ندارید';
+    header('Refresh: 2; URL = ../util/login.php');
+    die();
+}
+if ($_SESSION["user_group"] != 1) {
+    echo 'شما دسترسی به این صفحه ندارید';
 
-        header('Refresh: 2; URL = ../usr/profile.php');
-        die();
-    }
+    header('Refresh: 2; URL = ../usr/profile.php');
+    die();
+}
 include_once '../model/Trip.php';
 include_once '../model/User.php';
 include_once '../model/UserTrip.php';
@@ -154,10 +154,15 @@ if (!empty($_POST["name"])) {
             } else {
                 $allOtherUsers = User::getAllUsersOutOfTrip($trip_id);
             }
-
+            $count = 0;
             foreach ($allOtherUsers as $user) {
                 $userInfo = UserInfo::loadById($user->id);
-                echo "<tr>";
+                if ($count % 2)
+                    $class = "class='info'";
+                else
+                    $class = "class='warning'";
+                $count++;
+                echo "<tr " . $class . " >";
                 echo "    <td>";
                 echo $userInfo->name;
                 echo "    </td><td>";
@@ -165,7 +170,7 @@ if (!empty($_POST["name"])) {
                 echo "    </td><td>";
                 echo Constant::loadById($userInfo->married)->name;
                 if ($userInfo->married == 18) {
-                    logTabiat("married!" .$userInfo->marriage_date);
+                    logTabiat("married!" . $userInfo->marriage_date);
                     echo "<br>";
                     echo $userInfo->marraige_date;
                 }

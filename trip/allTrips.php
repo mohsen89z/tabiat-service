@@ -50,6 +50,9 @@
     //    }
 
     ?>
+    <h3>
+        تمام سفرها
+    </h3>
     <table class="table table-bordered table-striped table-hover">
         <thead>
         <tr>
@@ -75,8 +78,14 @@
 
         $trips = getAllTrips();
 
+        $count = 0;
         foreach ($trips as $trip) {
-            echo "<tr>";
+            if ($count % 2)
+                $class = "class='info'";
+            else
+                $class = "class='warning'";
+            $count++;
+            echo "<tr " . $class . " >";
             echo "    <td>";
             echo $trip->id;
             echo "    </td><td>";
@@ -120,6 +129,9 @@
         <?php
     }
     ?>
+
+    <br>
+    <br>
 </div>
 
 </body>

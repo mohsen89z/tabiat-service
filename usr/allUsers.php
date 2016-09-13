@@ -64,9 +64,14 @@ if ($_SESSION["user_group"] != 1) {
         include_once "../model/UserGroups.php";
 
         $users = User::getAll();
-
+        $count = 0;
         foreach ($users as $user) {
-            echo "<tr>";
+            if ($count % 2)
+                $class = "class='info'";
+            else
+                $class = "class='warning'";
+            $count++;
+            echo "<tr " . $class . " >";
             echo "    <td>";
             echo $user->id;
             echo "    </td><td>";

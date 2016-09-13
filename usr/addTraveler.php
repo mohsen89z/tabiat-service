@@ -126,9 +126,14 @@
             <tbody>
 
             <?php
-
+            $count = 0;
             foreach ($travelers as $traveler) {
-                echo "<tr>";
+                if ($count % 2)
+                    $class = "class='info'";
+                else
+                    $class = "class='warning'";
+                $count++;
+                echo "<tr " . $class . " >";
                 echo "    <td>";
                 echo $traveler->name;
                 echo "    </td><td>";

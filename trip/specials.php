@@ -62,9 +62,14 @@
         include_once "../model/Constant.php";
 
         $trips = getAllTrips();
-
+        $count = 0;
         foreach ($trips as $trip) {
-            echo "<tr>";
+            if ($count % 2)
+                $class = "class='info'";
+            else
+                $class = "class='warning'";
+            $count++;
+            echo "<tr " . $class . " >";
             echo "    <td>";
             echo $trip->id;
             echo "    </td><td>";

@@ -79,9 +79,15 @@ if ($_SESSION["user_group"] != 1) {
                 UserTrip::removeUsersFrom($userIds, $trip_id);
             }
             $users = User::getAllUsersOfTrip($trip_id);
+            $count = 0;
             foreach ($users as $user) {
                 $userInfo = UserInfo::loadById($user->id);
-                echo "<tr>";
+                if ($count % 2)
+                    $class = "class='info'";
+                else
+                    $class = "class='warning'";
+                $count++;
+                echo "<tr " . $class . " >";
                 echo "    <td>";
                 echo $userInfo->name;
                 echo "    </td><td>";
