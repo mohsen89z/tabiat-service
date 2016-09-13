@@ -38,6 +38,9 @@
 include_once "../model/Trip.php";
 include_once "../model/Constant.php";
 
+ob_start();
+session_start();
+
 $trip_id = $_GET["id"];
 
 $trip = Trip::loadById($trip_id);
@@ -51,7 +54,8 @@ $return_special = !empty($_GET["s"]);
 
 <div class="container">
     <h2>
-        <?php if ($edit) { ?>
+
+        <?php if ($edit && $_SESSION["user_group"] == 1) { ?>
             ویرایش اطلاعات سفر
         <?php } else { ?>
             مشاهده اطلاعات سفر
@@ -63,7 +67,7 @@ $return_special = !empty($_GET["s"]);
                 شماره
             </label>
             <div class="col-sm-10">
-                <input <?php if (!$edit) echo "disabled='disabled'" ?> type="number" class="form-control" name="id"
+                <input <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?> type="number" class="form-control" name="id"
                                                                        id="id" value="<?php echo $trip->id; ?>"
                                                                        readonly="readonly" placeholder="شماره سفر">
             </div>
@@ -73,7 +77,7 @@ $return_special = !empty($_GET["s"]);
                 نام سفر
             </label>
             <div class="col-sm-10">
-                <input <?php if (!$edit) echo "disabled='disabled'" ?> type="text" class="form-control"
+                <input <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?> type="text" class="form-control"
                                                                        value="<?php echo $trip->name; ?>" name="name"
                                                                        id="name"
                                                                        placeholder="نام سفر">
@@ -84,7 +88,7 @@ $return_special = !empty($_GET["s"]);
                 وضعیت
             </label>
             <div class="col-sm-4">
-                <select <?php if (!$edit) echo "disabled='disabled'" ?>class="form-control" name="status" id="status">
+                <select <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?>class="form-control" name="status" id="status">
                     <?php
                     $trip_statuses = Constant::getAllByType("trip_status");
 
@@ -103,7 +107,7 @@ $return_special = !empty($_GET["s"]);
                 سفر ویژه؟
             </label>
             <div class="col-sm-4">
-                <select <?php if (!$edit) echo "disabled='disabled'" ?>class="form-control" name="is_special"
+                <select <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?>class="form-control" name="is_special"
                         id="is_special">
                     <?php
                     $special_statuses = Constant::getAllByType("special_status");
@@ -123,7 +127,7 @@ $return_special = !empty($_GET["s"]);
                 وضعیت اجرا
             </label>
             <div class="col-sm-4">
-                <select <?php if (!$edit) echo "disabled='disabled'" ?>class="form-control" name="opr_stat"
+                <select <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?>class="form-control" name="opr_stat"
                         id="opr_stat">
                     <?php
                     $exec_statuses = Constant::getAllByType("exec_status");
@@ -144,7 +148,7 @@ $return_special = !empty($_GET["s"]);
                 نوع سفر
             </label>
             <div class="col-sm-4">
-                <select <?php if (!$edit) echo "disabled='disabled'" ?>class="form-control" name="trip_type"
+                <select <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?>class="form-control" name="trip_type"
                         id="trip_type">
                     <?php
                     $trip_types = Constant::getAllByType("trip_loc_type");
@@ -163,7 +167,7 @@ $return_special = !empty($_GET["s"]);
                 استان
             </label>
             <div class="col-sm-4">
-                <select <?php if (!$edit) echo "disabled='disabled'" ?>class="form-control" name="province_id"
+                <select <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?>class="form-control" name="province_id"
                         id="province_id">
                     <?php
                     $provinces = Constant::getAllByType("iran_state");
@@ -184,7 +188,7 @@ $return_special = !empty($_GET["s"]);
                 توضیحات
             </label>
             <div class="col-sm-10">
-                <textarea <?php if (!$edit) echo "disabled='disabled'" ?>class="form-control" rows="5"
+                <textarea <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?>class="form-control" rows="5"
                           name="description" id="description"
                           placeholder="توضیحات سفر"><?php echo $trip->description; ?></textarea>
             </div>
@@ -194,7 +198,7 @@ $return_special = !empty($_GET["s"]);
                 نکات سرپرستی
             </label>
             <div class="col-sm-10">
-                <textarea <?php if (!$edit) echo "disabled='disabled'" ?>class="form-control" rows="5"
+                <textarea <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?>class="form-control" rows="5"
                           name="adminstartor_cmt" id="adminstartor_cmt"
                           placeholder="نکات سرپرستی	"><?php echo $trip->adminstartor_cmt; ?></textarea>
             </div>
@@ -204,7 +208,7 @@ $return_special = !empty($_GET["s"]);
                 تاریخ شروع سفر
             </label>
             <div class="col-sm-4">
-                <input <?php if (!$edit) echo "disabled='disabled'" ?> type="text" class="form-control"
+                <input <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?> type="text" class="form-control"
                                                                        value="<?php echo $trip->start_date; ?>"
                                                                        id="start_date"
                                                                        name="start_date" placeholder="تاریخ شروع سفر"/>
@@ -213,7 +217,7 @@ $return_special = !empty($_GET["s"]);
                 تاریخ پایان سفر
             </label>
             <div class="col-sm-4">
-                <input <?php if (!$edit) echo "disabled='disabled'" ?> type="text" class="form-control"
+                <input <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?> type="text" class="form-control"
                                                                        value="<?php echo $trip->end_date; ?>"
                                                                        id="end_date"
                                                                        name="end_date" placeholder="تاریخ پایان سفر"/>
@@ -224,7 +228,7 @@ $return_special = !empty($_GET["s"]);
                 محل حرکت
             </label>
             <div class="col-sm-4">
-                <input <?php if (!$edit) echo "disabled='disabled'" ?> type="text" class="form-control"
+                <input <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?> type="text" class="form-control"
                                                                        value="<?php echo $trip->departure_place; ?>"
                                                                        id="departure_place" name="departure_place"
                                                                        placeholder="محل حرکت"/>
@@ -233,11 +237,11 @@ $return_special = !empty($_GET["s"]);
                 زمان حرکت
             </label>
             <div class="col-sm-4">
-                <input <?php if (!$edit) echo "disabled='disabled'" ?> type="text" class="form-control"
+                <input <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?> type="text" class="form-control"
                                                                        value="<?php echo explode('%', $trip->departure_time)[0]; ?>"
                                                                        id="departure_time" name="departure_time_date"
                                                                        placeholder="تاریخ حرکت"/>
-                <input <?php if (!$edit) echo "disabled='disabled'" ?> type="text" class="form-control"
+                <input <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?> type="text" class="form-control"
                                                                        value="<?php echo explode('%', $trip->departure_time)[1]; ?>"
                                                                        id="departure_time" name="departure_time_time"
                                                                        placeholder="ساعت حرکت"/>
@@ -248,7 +252,7 @@ $return_special = !empty($_GET["s"]);
                 خلاصه‌ای از جاذبه‌ها
             </label>
             <div class="col-sm-10">
-                <textarea <?php if (!$edit) echo "disabled='disabled'" ?>class="form-control" rows="5"
+                <textarea <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?>class="form-control" rows="5"
                           name="attractions" id="attractions"
                           placeholder="خلاصه‌ای از جاذبه‌ها"><?php echo $trip->attractions; ?></textarea>
             </div>
@@ -258,7 +262,7 @@ $return_special = !empty($_GET["s"]);
                 نحوه ی اجرا
             </label>
             <div class="col-sm-4">
-                <select <?php if (!$edit) echo "disabled='disabled'" ?>class="form-control" name="opr_type"
+                <select <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?>class="form-control" name="opr_type"
                         id="opr_type">
                     <?php
                     $opr_types = Constant::getAllByType("opr_type");
@@ -277,7 +281,7 @@ $return_special = !empty($_GET["s"]);
                 میزان سختی
             </label>
             <div class="col-sm-4">
-                <select <?php if (!$edit) echo "disabled='disabled'" ?>class="form-control" name="experties_level"
+                <select <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?>class="form-control" name="experties_level"
                         id="experties_level">
                     <?php
                     $experties_levels = Constant::getAllByType("experties_level");
@@ -298,7 +302,7 @@ $return_special = !empty($_GET["s"]);
                 پیشنیاز
             </label>
             <div class="col-sm-4">
-                <input <?php if (!$edit) echo "disabled='disabled'" ?> type="text" class="form-control"
+                <input <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?> type="text" class="form-control"
                                                                        value="<?php echo $trip->requiremnt_course; ?>"
                                                                        id="requiremnt_course" name="requiremnt_course"
                                                                        placeholder="پیشنیاز"/>
@@ -307,7 +311,7 @@ $return_special = !empty($_GET["s"]);
                 مدرک
             </label>
             <div class="col-sm-4">
-                <input <?php if (!$edit) echo "disabled='disabled'" ?> type="text" class="form-control"
+                <input <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?> type="text" class="form-control"
                                                                        value="<?php echo $trip->requirment_stuff; ?>"
                                                                        id="requirment_stuff" name="requirment_stuff"
                                                                        placeholder="مدرک"/>
@@ -318,7 +322,7 @@ $return_special = !empty($_GET["s"]);
                 ظرفیت
             </label>
             <div class="col-sm-10">
-                <input <?php if (!$edit) echo "disabled='disabled'" ?> type="number" min="0" class="form-control"
+                <input <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?> type="number" min="0" class="form-control"
                                                                        value="<?php echo $trip->capacity; ?>"
                                                                        name="capacity"
                                                                        id="capacity" placeholder="ظرفیت">
@@ -329,7 +333,7 @@ $return_special = !empty($_GET["s"]);
                 قیمت
             </label>
             <div class="col-sm-2">
-                <select <?php if (!$edit) echo "disabled='disabled'" ?>class="form-control" name="pric_type"
+                <select <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?>class="form-control" name="pric_type"
                         id="pric_type">
                     <?php
                     $price_types = Constant::getAllByType("price_type");
@@ -345,7 +349,7 @@ $return_special = !empty($_GET["s"]);
                 </select>
             </div>
             <div class="col-sm-2">
-                <input <?php if (!$edit) echo "disabled='disabled'" ?> type="number" step="1000" min="0"
+                <input <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?> type="number" step="1000" min="0"
                                                                        value="<?php echo $trip->price; ?>"
                                                                        class="form-control"
                                                                        name="price" id="price"
@@ -358,7 +362,7 @@ $return_special = !empty($_GET["s"]);
                 پورسانت
             </label>
             <div class="col-sm-3">
-                <input <?php if (!$edit) echo "disabled='disabled'" ?> type="number" step="1000" min="0"
+                <input <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?> type="number" step="1000" min="0"
                                                                        value="<?php echo $trip->wage; ?>"
                                                                        class="form-control"
                                                                        name="wage" id="wage"
@@ -373,7 +377,7 @@ $return_special = !empty($_GET["s"]);
                 توضیحات قیمت
             </label>
             <div class="col-sm-10">
-                <input <?php if (!$edit) echo "disabled='disabled'" ?> type="text" class="form-control"
+                <input <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?> type="text" class="form-control"
                                                                        value="<?php echo $trip->price_decs; ?>"
                                                                        name="price_decs"
                                                                        id="price_decs" placeholder="توضیحات قیمت">
@@ -384,7 +388,7 @@ $return_special = !empty($_GET["s"]);
                 نوع قرارداد
             </label>
             <div class="col-sm-10">
-                <select <?php if (!$edit) echo "disabled='disabled'" ?>class="form-control" name="contract_type"
+                <select <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?>class="form-control" name="contract_type"
                         id="contract_type">
                     <?php
                     $contract_types = Constant::getAllByType("contract_type");
@@ -405,7 +409,7 @@ $return_special = !empty($_GET["s"]);
                 تاریخ شروع ثبت نام
             </label>
             <div class="col-sm-4">
-                <input <?php if (!$edit) echo "disabled='disabled'" ?> type="text" class="form-control"
+                <input <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?> type="text" class="form-control"
                                                                        value="<?php echo $trip->start_order; ?>"
                                                                        id="start_order"
                                                                        name="start_order"
@@ -415,7 +419,7 @@ $return_special = !empty($_GET["s"]);
                 تاریخ پایان ثبت نام
             </label>
             <div class="col-sm-4">
-                <input <?php if (!$edit) echo "disabled='disabled'" ?> type="text" class="form-control"
+                <input <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?> type="text" class="form-control"
                                                                        value="<?php echo $trip->end_order; ?>"
                                                                        id="end_order"
                                                                        name="end_order"
@@ -428,7 +432,7 @@ $return_special = !empty($_GET["s"]);
             </label>
             <div class="col-sm-10">
                 <textarea
-                    <?php if (!$edit) echo "disabled='disabled'" ?>class="form-control"
+                    <?php if (!$edit || $_SESSION["user_group"] != 1) echo "disabled='disabled'" ?>class="form-control"
                     rows="5" name="invis_cmt" id="invis_cmt"
                     placeholder="توضیحات مخفی"><?php echo $trip->invis_cmt; ?></textarea>
             </div>
@@ -442,7 +446,7 @@ $return_special = !empty($_GET["s"]);
 
                 <?php
                 $con_types = Constant::getAllByType("trip_spc");
-                if (!$edit) {
+                if (!$edit || $_SESSION["user_group"] != 1) {
                     foreach ($con_types as $con_type) {
                         if (in_array($con_type->id, $trip_specs, true)) {
                             echo "<div  class='col-sm-6'><input disabled='disabled' type='checkbox' value='" . $con_type->id . "' name='trip_spec[]' checked/>
@@ -472,7 +476,7 @@ $return_special = !empty($_GET["s"]);
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
 
-                <?php if (!$edit) { ?>
+                <?php if (!$edit || $_SESSION["user_group"] != 1) { ?>
                 <?php if ($return_special) { ?>
                 <a href="editTrip.php?s=t&edit=true&id=<?php echo $trip_id ?>" class="btn btn-success">
                     <?php } else { ?>

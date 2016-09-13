@@ -41,6 +41,26 @@ $trip = Trip::loadById($trip_id);
 ?>
 
 <div class="container">
+    <?php
+
+    ob_start();
+    session_start();
+
+
+    if ($_SESSION["valid"] != true) {
+
+        echo 'شما دسترسی به این صفحه ندارید';
+
+        header('Refresh: 2; URL = ../util/login.php');
+        die();
+    }
+    if ($_SESSION["user_group"] != 1) {
+        echo 'شما دسترسی به این صفحه ندارید';
+
+        header('Refresh: 2; URL = ../usr/profile.php');
+        die();
+    }
+    ?>
     <h2>
         اطلاعات تکمیلی سفر
     </h2>

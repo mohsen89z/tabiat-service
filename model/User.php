@@ -33,6 +33,14 @@ class User
         $this->group_id = $group_id;
     }
 
+    public static function findByUserName($username)
+    {
+        $sql = sprintf("select * from users where username = '%s'", $username);
+
+        echo $sql;
+        return runSingleSelect($sql);
+    }
+
     public function save()
     {
         $sql = sprintf("INSERT INTO users (id, username, password, group_id)

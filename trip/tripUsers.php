@@ -8,10 +8,49 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="//cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css">
+
+    <style>
+        body {
+            background: #76b852;
+            background: -webkit-linear-gradient(right, #76b852, #8DC26F);
+            background: -moz-linear-gradient(right, #76b852, #8DC26F);
+            background: -o-linear-gradient(right, #76b852, #8DC26F);
+            background: linear-gradient(to left, #76b852, #8DC26F);
+        }
+
+        .container {
+            background: #FFFFFF;
+            margin-top: 100px;
+            margin-bottom: 100px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
+
 <body>
 
+<?php
+
+ob_start();
+session_start();
+
+if ($_SESSION["valid"] != true) {
+
+    echo 'شما دسترسی به این صفحه ندارید';
+
+    header('Refresh: 2; URL = ../util/login.php');
+    die();
+}
+if ($_SESSION["user_group"] != 1) {
+    echo 'شما دسترسی به این صفحه ندارید';
+
+    header('Refresh: 2; URL = ../usr/profile.php');
+    die();
+}
+?>
 <div class="container">
+    <br>
+    <br>
     <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
 
         <table class="table table-bordered table-striped table-hover">
@@ -21,7 +60,7 @@
                 <th>نام خانوادگی</th>
                 <th>وضعیت تاهل</th>
                 <th>وضعیت سلامتی</th>
-                <th>تغییر رمز</th>
+                <th>حذف کاربر از سفر</th>
             </tr>
             </thead>
             <tbody>
@@ -37,10 +76,7 @@
             $trip_id = $_GET["id"];
             if (!empty($_POST["ProcessingStep"])) {
                 $userIds = $_POST["user_ids"];
-                logTabiat($userIds);
-                logTabiat($id);
                 UserTrip::removeUsersFrom($userIds, $trip_id);
-                logTabiat("after remove users");
             }
             $users = User::getAllUsersOfTrip($trip_id);
             foreach ($users as $user) {
@@ -87,7 +123,10 @@
         </a>
         <input type="hidden" name="ProcessingStep" value="add">
 
+        <br>
+        <br>
 </div>
+
 </form>
 </body>
 </html>

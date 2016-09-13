@@ -59,6 +59,20 @@ if (empty($_GET["id"])) {
 <body>
 
 <div class="container">
+    <?php
+    ob_start();
+    session_start();
+
+
+    if ($_SESSION["valid"] != true) {
+
+        echo 'شما دسترسی به این صفحه ندارید';
+
+        header('Refresh: 2; URL = ../util/login.php');
+        die();
+    }
+//    if($_SESSION["user_group"] == 1)
+    ?>
     <h2>
         <?php if ($edit) { ?>
             ویرایش اطلاعات کاربر

@@ -10,11 +10,32 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="//cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css">
+
+    <style>
+        body {
+            background: #76b852;
+            background: -webkit-linear-gradient(right, #76b852, #8DC26F);
+            background: -moz-linear-gradient(right, #76b852, #8DC26F);
+            background: -o-linear-gradient(right, #76b852, #8DC26F);
+            background: linear-gradient(to left, #76b852, #8DC26F);
+        }
+
+        .container {
+            background: #FFFFFF;
+            margin-top: 100px;
+            margin-bottom: 100px;
+            border-radius: 5px;
+        }
+    </style>
+
 </head>
 <body>
 <?php
 include_once '../model/AdditionalTrip.php';
 include_once '../util/dbManager.php';
+
+ob_start();
+session_start();
 
 $car = $_POST["trip_vec"];
 $necessary_tools = $_POST["trip_nes"];

@@ -30,6 +30,19 @@
 
 <div class="container">
     <?php
+
+    ob_start();
+    session_start();
+
+
+    if ($_SESSION["valid"] != true) {
+
+        echo 'شما دسترسی به این صفحه ندارید';
+
+        header('Refresh: 2; URL = ../util/login.php');
+        die();
+    }
+
     include_once "../model/User.php";
     include_once "../model/Trip.php";
     include_once "../model/UserGroups.php";

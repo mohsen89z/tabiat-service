@@ -54,10 +54,29 @@ if (empty($_GET["id"])) {
 
 <div class="container">
     <h2>
-        <?php if (empty($user)) { ?>
+        <?php
+        ob_start();
+        session_start();
+
+
+        if ($_SESSION["valid"] != true) {
+
+            echo 'شما دسترسی به این صفحه ندارید';
+
+            header('Refresh: 2; URL = ../util/login.php');
+            die();
+        }
+        if (empty($user)) {
+            if ($_SESSION["user_group"] != 1) {
+                echo 'شما دسترسی به این صفحه ندارید';
+
+                header('Refresh: 2; URL = profile.php');
+                die();
+            }
+            ?>
             کاربرجدید
         <?php } else { ?>
-            ویرایش کاربر
+            ویرایش اطلاعات
         <?php } ?>
     </h2>
     <form class="form-horizontal" role="form" method="post" action="insert.php">
@@ -91,7 +110,8 @@ if (empty($_GET["id"])) {
                 <?php if (empty($user)) { ?>
                     <input type="password" class="form-control" name="password" id="password" placeholder="رمز عبور">
                 <?php } else { ?>
-                    <input type="password" class="form-control" name="password" value="<?php echo $user->password; ?>" id="password" placeholder="رمز عبور">
+                    <input type="password" class="form-control" name="password" value="<?php echo $user->password; ?>"
+                           id="password" placeholder="رمز عبور">
                 <?php } ?>
             </div>
         </div>

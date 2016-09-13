@@ -45,10 +45,28 @@
 include_once '../model/Trip.php';
 include_once '../model/TripImage.php';
 
+ob_start();
+session_start();
+
+
+if ($_SESSION["valid"] != true) {
+
+    echo 'شما دسترسی به این صفحه ندارید';
+
+    header('Refresh: 2; URL = ../util/login.php');
+    die();
+}
+if ($_SESSION["user_group"] != 1) {
+    echo 'شما دسترسی به این صفحه ندارید';
+
+    header('Refresh: 2; URL = ../usr/profile.php');
+    die();
+}
 if (empty($_GET["id"])) {
-    echo "Access Denied!";
+    echo "سفر مورد نظر وجود ندارد";
     die(0);
-} else {
+}
+else {
     $id = $_GET["id"];
 
 //    TripImage::initTripImages();
