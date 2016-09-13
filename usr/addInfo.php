@@ -59,21 +59,46 @@ if (empty($_GET["id"])) {
 </head>
 <body>
 
-<div class="container">
-    <?php
-    ob_start();
-    session_start();
+<?php
+ob_start();
+session_start();
 
 
-    if ($_SESSION["valid"] != true) {
+if ($_SESSION["valid"] != true) {
 
-        echo 'شما دسترسی به این صفحه ندارید';
+    echo 'شما دسترسی به این صفحه ندارید';
 
-        header('Refresh: 2; URL = ../util/login.php');
-        die();
-    }
+    header('Refresh: 2; URL = ../util/login.php');
+    die();
+}
 //    if($_SESSION["user_group"] == 1)
-    ?>
+?>
+
+<div class="container-fluid">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="../usr/profile.php">طبیعت</a>
+    </div>
+    <ul class="nav navbar-nav">
+
+        <?php
+        if ($_SESSION['user_group'] == 1) {
+            ?>
+            <li><a href="../trip/addTrip.php">اضافه کردن سفر</a></li>
+            <li><a href="../usr/addUser.php">اضافه کردن کاربر</a></li>
+            <?php
+        }
+        ?>
+        <li><a href="../usr/myTrips.php"> لیست سفرهای من </a></li>
+        <li><a href="../trip/allTrips.php"> لیست تمام سفرها </a></li>
+        <li><a href="../trip/specials.php"> لیست سفرهای ویژه </a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-left">
+        <li><a href="../util/logout.php"> خروج</a></li>
+    </ul>
+</div>
+<div class="container">
     <h2>
         <?php if ($edit) { ?>
             ویرایش اطلاعات کاربر

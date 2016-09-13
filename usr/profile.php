@@ -40,8 +40,7 @@ session_start();
     </style>
 </head>
 <body>
-
-<div class="container">
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <?php
     include_once "../model/Constant.php";
     include_once "../model/User.php";
@@ -52,22 +51,31 @@ session_start();
     $user = User::loadById($id);
     $userInfo = UserInfo::loadById($id);
     ?>
-    <br>
-    <form class="form-horizontal" role="form" method="post" action="insertInfo.php">
-        <?php
-        if ($_SESSION['valid'] == true) {
+    <div class="container-fluid">
+
+        <div class="navbar-header">
+            <a class="navbar-brand" href="../usr/profile.php">طبیعت</a>
+        </div>
+        <ul class="nav navbar-nav">
+
+            <?php
+            if ($_SESSION['valid'] == true) {
             if ($_SESSION['user_group'] == 1) {
                 ?>
-                <a href="../trip/addTrip.php" class="btn btn-primary">اضافه کردن سفر</a>
-                <a href="addUser.php" class="btn btn-default">اضافه کردن کاربر</a>
+                <li><a href="../trip/addTrip.php">اضافه کردن سفر</a></li>
+                <li><a href="addUser.php">اضافه کردن کاربر</a></li>
                 <?php
             }
             ?>
-            <a href="myTrips.php" class="btn btn-success"> لیست سفرهای من </a>
-            <a href="../trip/allTrips.php" class="btn btn-info"> لیست تمام سفرها </a>
-            <a href="../trip/specials.php" class="btn btn-warning"> لیست سفرهای ویژه </a>
-            <a href="../util/logout.php" class="btn btn-danger"> خروج</a>
-            <?php
+            <li><a href="myTrips.php"> لیست سفرهای من </a></li>
+            <li><a href="../trip/allTrips.php"> لیست تمام سفرها </a></li>
+            <li><a href="../trip/specials.php"> لیست سفرهای ویژه </a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-left">
+            <li><a href="../util/logout.php"> خروج</a></li>
+        </ul>
+
+        <?php
         } else {
             ?>
             شما دسترسی به این صفحه ندارید
@@ -77,6 +85,12 @@ session_start();
             die();
         }
         ?>
+    </div>
+</nav>
+<div class="container">
+
+    <br>
+    <form class="form-horizontal" role="form" method="post" action="insertInfo.php">
         <br>
         <br>
         <div class="form-group">

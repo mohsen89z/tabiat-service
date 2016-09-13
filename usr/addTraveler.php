@@ -27,43 +27,67 @@
     </style>
 </head>
 <body>
+<?php
+
+ob_start();
+session_start();
+
+
+if ($_SESSION["valid"] != true) {
+
+    echo 'شما دسترسی به این صفحه ندارید';
+
+    header('Refresh: 2; URL = ../util/login.php');
+    die();
+}
+
+include_once "../model/User.php";
+include_once "../model/Trip.php";
+include_once "../model/UserGroups.php";
+include_once "../model/UserInfo.php";
+include_once "../model/Travelers.php";
+
+$user_id = $_GET["user_id"];
+$trip_id = $_GET["trip_id"];
+$user = User::loadById($user_id);
+$userInfo = UserInfo::loadById($user_id);
+$trip = Trip::loadById($trip_id);
+
+if (!empty($_POST["traveler_name"]) && !empty($_POST["traveler_family"]) && !empty($_POST["national_code"])) {
+    Travelers::addTraveler($_POST["national_code"], $_POST["traveler_name"], $_POST["traveler_family"], $trip->id, $user->id);
+}
+if (!empty($_GET["traveler_id"])) {
+    Travelers::delete($_GET["traveler_id"]);
+}
+$travelers = Travelers::loadByUserIdAndTripId($user_id, $trip_id);
+
+?>
+<div class="container-fluid">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="../usr/profile.php">طبیعت</a>
+    </div>
+    <ul class="nav navbar-nav">
+
+        <?php
+        if ($_SESSION['user_group'] == 1) {
+            ?>
+            <li><a href="../trip/addTrip.php">اضافه کردن سفر</a></li>
+            <li><a href="addUser.php">اضافه کردن کاربر</a></li>
+            <?php
+        }
+        ?>
+        <li><a href="myTrips.php"> لیست سفرهای من </a></li>
+        <li><a href="../trip/allTrips.php"> لیست تمام سفرها </a></li>
+        <li><a href="../trip/specials.php"> لیست سفرهای ویژه </a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-left">
+        <li><a href="../util/logout.php"> خروج</a></li>
+    </ul>
+</div>
 
 <div class="container">
-    <?php
-
-    ob_start();
-    session_start();
-
-
-    if ($_SESSION["valid"] != true) {
-
-        echo 'شما دسترسی به این صفحه ندارید';
-
-        header('Refresh: 2; URL = ../util/login.php');
-        die();
-    }
-
-    include_once "../model/User.php";
-    include_once "../model/Trip.php";
-    include_once "../model/UserGroups.php";
-    include_once "../model/UserInfo.php";
-    include_once "../model/Travelers.php";
-
-    $user_id = $_GET["user_id"];
-    $trip_id = $_GET["trip_id"];
-    $user = User::loadById($user_id);
-    $userInfo = UserInfo::loadById($user_id);
-    $trip = Trip::loadById($trip_id);
-
-    if (!empty($_POST["traveler_name"]) && !empty($_POST["traveler_family"]) && !empty($_POST["national_code"])) {
-        Travelers::addTraveler($_POST["national_code"], $_POST["traveler_name"], $_POST["traveler_family"], $trip->id, $user->id);
-    }
-    if (!empty($_GET["traveler_id"])) {
-        Travelers::delete($_GET["traveler_id"]);
-    }
-    $travelers = Travelers::loadByUserIdAndTripId($user_id, $trip_id);
-
-    ?>
     <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
         <input type="hidden" name="ProcessingStep" value="add">
 
