@@ -95,7 +95,7 @@ if ($_SESSION["valid"] != true) {
         <li><a href="../trip/specials.php"> لیست سفرهای ویژه </a></li>
     </ul>
     <ul class="nav navbar-nav navbar-left">
-        <li><a href="../util/logout.php"> خروج</a></li>
+        <li><a href="../security/logout.php"> خروج</a></li>
     </ul>
 </div>
 <div class="container">

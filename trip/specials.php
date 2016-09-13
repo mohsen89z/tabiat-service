@@ -45,16 +45,16 @@ session_start();
             if ($_SESSION['user_group'] == 1) {
                 ?>
                 <li><a href="../trip/addTrip.php">اضافه کردن سفر</a></li>
-                <li><a href="addUser.php">اضافه کردن کاربر</a></li>
+                <li><a href="../usr/addUser.php">اضافه کردن کاربر</a></li>
                 <?php
             }
             ?>
-            <li><a href="myTrips.php"> لیست سفرهای من </a></li>
+            <li><a href="../usr/myTrips.php"> لیست سفرهای من </a></li>
             <li><a href="../trip/allTrips.php"> لیست تمام سفرها </a></li>
             <li><a href="../trip/specials.php"> لیست سفرهای ویژه </a></li>
         </ul>
         <ul class="nav navbar-nav navbar-left">
-            <li><a href="../util/logout.php"> خروج</a></li>
+            <li><a href="../security/logout.php"> خروج</a></li>
         </ul>
 </div>
 <div class="container">
